@@ -19,11 +19,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dataspurce = PolygonRestDataSource(apiManager);
+    final dataSource = PolygonRestDataSource(apiManager);
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => RealtimeCurrencyCubit(dataspurce)),
-        BlocProvider(create: (_) => PolygonCubit()),
+        BlocProvider(create: (_) => RealtimeCurrencyCubit(dataSource)),
+        BlocProvider(create: (_) => PolygonCubit(dataSource)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

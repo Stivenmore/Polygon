@@ -61,7 +61,7 @@ class ApiManager {
       );
     }
 
-    Map<String, dynamic> _headers = <String, dynamic>{};
+    Map<String, dynamic> headers = <String, dynamic>{};
 
     Uri uri = Uri.https(temporalHost ?? _host, path, queryParameters);
 
@@ -72,7 +72,7 @@ class ApiManager {
     final Response response;
 
     final Options options = Options(
-      headers: _headers,
+      headers: headers,
     );
 
     try {
