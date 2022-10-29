@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:divisas/data/contract/polygon_contract.dart';
 import 'package:divisas/data/services/result.dart';
+import 'package:divisas/device/conection_manager.dart';
 import 'package:divisas/device/db/month/db_model_month.dart';
 import 'package:divisas/device/db/oneyear/db_model_oneyear.dart';
 import 'package:divisas/device/db/today/db_model_today.dart';
@@ -16,8 +19,9 @@ import 'package:hive/hive.dart';
 part 'polygon_state.dart';
 
 class PolygonCubit extends Cubit<PolygonState> {
+  final ConectionManager conectionManager;
   final PolygonContract _dataSource;
-  PolygonCubit(PolygonContract dataSource)
+  PolygonCubit(PolygonContract dataSource, this.conectionManager)
       : _dataSource = dataSource,
         super(PolygonState());
 
@@ -31,8 +35,8 @@ class PolygonCubit extends Cubit<PolygonState> {
       if (resp.isSuccess) {
         AggregateBarEntity localModel =
             AggregateBarEntity.fromJson(resp.successRes);
-        await configurationLocalSave(
-            currentSelect, localModel, resp.successRes["results"]);
+        await configurationLocalSave(currentSelect, localModel,
+            resp.successRes["results"] as List? ?? []);
         emit(state.copyWith(
             aggregateBarEntity: localModel,
             currentSelect: currentSelect,
@@ -52,8 +56,8 @@ class PolygonCubit extends Cubit<PolygonState> {
       case 0:
         final box = await Hive.openBox<DBModelTwoYear>('dbmodeltwoyear');
         final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-        final model = box.get(boxkeylast) as DBModelTwoYear;
         if (box.length > 0) {
+          final model = box.get(boxkeylast) as DBModelTwoYear;
           AggregateBarEntity localmodel = AggregateBarEntity(
               resultsCount: model.resultsCount,
               id: model.id,
@@ -61,7 +65,10 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: model.status,
               ticker: model.ticker,
               result: model.result
-                  .map((e) => AggregateBarResult.fromJson(e))
+                  .map((e) => AggregateBarResult.fromJson(
+                      e is Map<String, dynamic>
+                          ? e
+                          : Map<String, dynamic>.from(e.value)))
                   .toList());
           emit(state.copyWith(
               aggregateBarEntity: localmodel,
@@ -69,14 +76,15 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: PolygonStateStatus.loaded,
               type: configutateType(currentSelect)));
         } else {
-          emit(state.copyWith(status: PolygonStateStatus.error));
+          emit(state.copyWith(
+              status: PolygonStateStatus.error, currentSelect: currentSelect));
         }
         break;
       case 1:
         final box = await Hive.openBox<DBModelOneYear>('dbmodeloneyear');
         final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-        final model = box.get(boxkeylast) as DBModelOneYear;
         if (box.length > 0) {
+          final model = box.get(boxkeylast) as DBModelOneYear;
           AggregateBarEntity localmodel = AggregateBarEntity(
               resultsCount: model.resultsCount,
               id: model.id,
@@ -84,7 +92,10 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: model.status,
               ticker: model.ticker,
               result: model.result
-                  .map((e) => AggregateBarResult.fromJson(e))
+                  .map((e) => AggregateBarResult.fromJson(
+                      e is Map<String, dynamic>
+                          ? e
+                          : Map<String, dynamic>.from(e.value)))
                   .toList());
           emit(state.copyWith(
               aggregateBarEntity: localmodel,
@@ -92,14 +103,15 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: PolygonStateStatus.loaded,
               type: configutateType(currentSelect)));
         } else {
-          emit(state.copyWith(status: PolygonStateStatus.error));
+          emit(state.copyWith(
+              status: PolygonStateStatus.error, currentSelect: currentSelect));
         }
         break;
       case 2:
         final box = await Hive.openBox<DBModelMonth>('dbmodelmonth');
         final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-        final model = box.get(boxkeylast) as DBModelMonth;
         if (box.length > 0) {
+          final model = box.get(boxkeylast) as DBModelMonth;
           AggregateBarEntity localmodel = AggregateBarEntity(
               resultsCount: model.resultsCount,
               id: model.id,
@@ -107,7 +119,10 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: model.status,
               ticker: model.ticker,
               result: model.result
-                  .map((e) => AggregateBarResult.fromJson(e))
+                  .map((e) => AggregateBarResult.fromJson(
+                      e is Map<String, dynamic>
+                          ? e
+                          : Map<String, dynamic>.from(e.value)))
                   .toList());
           emit(state.copyWith(
               aggregateBarEntity: localmodel,
@@ -115,14 +130,15 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: PolygonStateStatus.loaded,
               type: configutateType(currentSelect)));
         } else {
-          emit(state.copyWith(status: PolygonStateStatus.error));
+          emit(state.copyWith(
+              status: PolygonStateStatus.error, currentSelect: currentSelect));
         }
         break;
       case 3:
         final box = await Hive.openBox<DBModelWeek>('dbmodelweek');
         final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-        final model = box.get(boxkeylast) as DBModelWeek;
         if (box.length > 0) {
+          final model = box.get(boxkeylast) as DBModelWeek;
           AggregateBarEntity localmodel = AggregateBarEntity(
               resultsCount: model.resultsCount,
               id: model.id,
@@ -130,7 +146,10 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: model.status,
               ticker: model.ticker,
               result: model.result
-                  .map((e) => AggregateBarResult.fromJson(e))
+                  .map((e) => AggregateBarResult.fromJson(
+                      e is Map<String, dynamic>
+                          ? e
+                          : Map<String, dynamic>.from(e.value)))
                   .toList());
           emit(state.copyWith(
               aggregateBarEntity: localmodel,
@@ -138,14 +157,15 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: PolygonStateStatus.loaded,
               type: configutateType(currentSelect)));
         } else {
-          emit(state.copyWith(status: PolygonStateStatus.error));
+          emit(state.copyWith(
+              status: PolygonStateStatus.error, currentSelect: currentSelect));
         }
         break;
       case 4:
         final box = await Hive.openBox<DBModelToday>('dbmodeltoday');
         final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-        final model = box.get(boxkeylast) as DBModelToday;
         if (box.length > 0) {
+          final model = box.get(boxkeylast) as DBModelToday;
           AggregateBarEntity localmodel = AggregateBarEntity(
               resultsCount: model.resultsCount,
               id: model.id,
@@ -153,7 +173,10 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: model.status,
               ticker: model.ticker,
               result: model.result
-                  .map((e) => AggregateBarResult.fromJson(e))
+                  .map((e) => AggregateBarResult.fromJson(
+                      e is Map<String, dynamic>
+                          ? e
+                          : Map<String, dynamic>.from(e.value)))
                   .toList());
           emit(state.copyWith(
               aggregateBarEntity: localmodel,
@@ -161,7 +184,8 @@ class PolygonCubit extends Cubit<PolygonState> {
               status: PolygonStateStatus.loaded,
               type: configutateType(currentSelect)));
         } else {
-          emit(state.copyWith(status: PolygonStateStatus.error));
+          emit(state.copyWith(
+              status: PolygonStateStatus.error, currentSelect: currentSelect));
         }
         break;
     }

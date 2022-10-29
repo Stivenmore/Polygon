@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:divisas/data/contract/polygon_contract.dart';
 import 'package:divisas/data/services/result.dart';
 import 'package:divisas/device/conection_manager.dart';

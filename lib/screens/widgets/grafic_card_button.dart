@@ -24,52 +24,15 @@ class GraficCardButton extends StatelessWidget {
       final status = context.select((PolygonCubit value) => value.state.status);
       switch (status) {
         case PolygonStateStatus.loaded:
-          return Padding(
-            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: SizedBox(
-              height: 30,
-              width: responsive.wp(90),
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: listbutton.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        currentSelect != index
-                            ? cubit.aggregatesBarGet(index)
-                            : null;
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(left: responsive.wp(5)),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 500),
-                          height: 10,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              color: currentSelect == index
-                                  ? Colors.white
-                                  : kColorBlue,
-                              borderRadius: BorderRadius.circular(18),
-                              border: currentSelect == index
-                                  ? Border.all(
-                                      color:
-                                          kColorgrayPalletHard.withOpacity(0.5))
-                                  : null),
-                          child: Center(
-                              child: Text(
-                            listbutton[index],
-                            style: GoogleFonts.roboto(
-                                textStyle: TextStyle(
-                                    color: currentSelect == index
-                                        ? Colors.black
-                                        : Colors.white)),
-                          )),
-                        ),
-                      ),
-                    );
-                  }),
-            ),
-          );
+          return ButtonCard(
+              responsive: responsive,
+              currentSelect: currentSelect,
+              cubit: cubit);
+        case PolygonStateStatus.error:
+          return ButtonCard(
+              responsive: responsive,
+              currentSelect: currentSelect,
+              cubit: cubit);
         case PolygonStateStatus.loading:
           return Shimmer.fromColors(
             baseColor: Colors.grey.shade400,
@@ -125,5 +88,64 @@ class GraficCardButton extends StatelessWidget {
           return Container();
       }
     });
+  }
+}
+
+class ButtonCard extends StatelessWidget {
+  const ButtonCard({
+    Key? key,
+    required this.responsive,
+    required this.currentSelect,
+    required this.cubit,
+  }) : super(key: key);
+
+  final Responsive responsive;
+  final int currentSelect;
+  final PolygonCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+      child: SizedBox(
+        height: 30,
+        width: responsive.wp(90),
+        child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: listbutton.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  currentSelect != index ? cubit.aggregatesBarGet(index) : null;
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(left: responsive.wp(5)),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 500),
+                    height: 10,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        color:
+                            currentSelect == index ? Colors.white : kColorBlue,
+                        borderRadius: BorderRadius.circular(18),
+                        border: currentSelect == index
+                            ? Border.all(
+                                color: kColorgrayPalletHard.withOpacity(0.5))
+                            : null),
+                    child: Center(
+                        child: Text(
+                      listbutton[index],
+                      style: GoogleFonts.roboto(
+                          textStyle: TextStyle(
+                              color: currentSelect == index
+                                  ? Colors.black
+                                  : Colors.white)),
+                    )),
+                  ),
+                ),
+              );
+            }),
+      ),
+    );
   }
 }

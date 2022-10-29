@@ -11,74 +11,58 @@ configurationLocalSave(
   switch (currentSelect) {
     case 0:
       final box = await Hive.openBox<DBModelTwoYear>('dbmodeltwoyear');
-      final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-      DBModelTwoYear? modelWeek = box.get(boxkeylast);
-      if (model.result[0].t != modelWeek?.result[0].t) {
-        await box.add(DBModelTwoYear(
-            resultsCount: model.resultsCount,
-            id: model.id,
-            queryCount: model.queryCount,
-            result: map,
-            status: model.status,
-            ticker: model.ticker));
-      }
+      await box.add(DBModelTwoYear(
+          resultsCount: model.resultsCount,
+          id: model.id,
+          queryCount: model.queryCount,
+          result: map,
+          status: model.status,
+          ticker: model.ticker));
+      if (box.length > 1) await box.delete(box.keys.first);
       break;
     case 1:
       final box = await Hive.openBox<DBModelOneYear>('dbmodeloneyear');
-      final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-      DBModelOneYear? modelWeek = box.get(boxkeylast);
-      if (model.result[0].t != modelWeek?.result[0].t) {
-        await box.add(DBModelOneYear(
-            resultsCount: model.resultsCount,
-            id: model.id,
-            queryCount: model.queryCount,
-            result: map,
-            status: model.status,
-            ticker: model.ticker));
-      }
+      await box.add(DBModelOneYear(
+          resultsCount: model.resultsCount,
+          id: model.id,
+          queryCount: model.queryCount,
+          result: map,
+          status: model.status,
+          ticker: model.ticker));
+      if (box.length > 1) await box.delete(box.keys.first);
       break;
     case 2:
       final box = await Hive.openBox<DBModelMonth>('dbmodelmonth');
-      final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-      DBModelMonth? modelWeek = box.get(boxkeylast);
-      if (model.result[0].t != modelWeek?.result[0].t) {
-        await box.add(DBModelMonth(
-            resultsCount: model.resultsCount,
-            id: model.id,
-            queryCount: model.queryCount,
-            result: map,
-            status: model.status,
-            ticker: model.ticker));
-      }
+      await box.add(DBModelMonth(
+          resultsCount: model.resultsCount,
+          id: model.id,
+          queryCount: model.queryCount,
+          result: map,
+          status: model.status,
+          ticker: model.ticker));
+      if (box.length > 1) await box.delete(box.keys.first);
       break;
     case 3:
       final box = await Hive.openBox<DBModelWeek>('dbmodelweek');
-      final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-      DBModelWeek? modelWeek = box.get(boxkeylast);
-      if (model.result[0].t != modelWeek?.result[0].t) {
-        await box.add(DBModelWeek(
-            resultsCount: model.resultsCount,
-            id: model.id,
-            queryCount: model.queryCount,
-            result: map,
-            status: model.status,
-            ticker: model.ticker));
-      }
+      await box.add(DBModelWeek(
+          resultsCount: model.resultsCount,
+          id: model.id,
+          queryCount: model.queryCount,
+          result: map,
+          status: model.status,
+          ticker: model.ticker));
+      if (box.length > 1) await box.delete(box.keys.first);
       break;
     case 4:
       final box = await Hive.openBox<DBModelToday>('dbmodeltoday');
-      final boxkeylast = box.keys.length > 0 ? box.keys.last : 0;
-      DBModelToday? modelWeek = box.get(boxkeylast);
-      if (model.result[0].t != modelWeek?.result[0].t) {
-        await box.add(DBModelToday(
-            resultsCount: model.resultsCount,
-            id: model.id,
-            queryCount: model.queryCount,
-            result: map,
-            status: model.status,
-            ticker: model.ticker));
-      }
-
+      await box.add(DBModelToday(
+          resultsCount: model.resultsCount,
+          id: model.id,
+          queryCount: model.queryCount,
+          result: map,
+          status: model.status,
+          ticker: model.ticker));
+      if (box.length > 1) await box.delete(box.keys.first);
       break;
   }
 }

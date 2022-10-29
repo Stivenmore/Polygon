@@ -43,6 +43,12 @@ class GraficCard extends StatelessWidget {
               ],
             ),
           );
+        case PolygonStateStatus.error:
+          return SizedBox(
+              height: 150,
+              width: 150,
+              child: Text(
+                  "Sin informacion local para cargar, revise su conexion"));
         default:
           return Container();
       }

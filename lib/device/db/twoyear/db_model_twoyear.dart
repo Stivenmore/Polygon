@@ -1,4 +1,3 @@
-import 'package:divisas/domain/entities/aggregates_bar_entity.dart';
 import 'package:hive/hive.dart';
 
 part 'db_model_twoyear.g.dart';

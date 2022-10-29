@@ -59,7 +59,7 @@ class AggregateBarResult extends Equatable {
       c: map["c"] ?? 0.0,
       h: map["h"] ?? 0.0,
       l: map["l"] ?? 0.0,
-      t: timeFormatGrafic(map["t"]),
+      t: timeFormatGrafic(map["t"] as int? ?? DateTime.now()),
       n: map["n"] ?? 0,
     );
   }

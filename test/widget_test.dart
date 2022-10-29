@@ -29,7 +29,8 @@ void main() async {
     );
     blocTest<PolygonCubit, PolygonState>(
       'Load aggregatesBar Success',
-      build: () => PolygonCubit(PolygonTestMock(apiManagerMock2)),
+      build: () =>
+          PolygonCubit(PolygonTestMock(apiManagerMock2), ConectionManager()),
       act: (PolygonCubit cubit) => cubit.aggregatesBarGet(4),
       expect: () => <PolygonState>[
         PolygonState(status: PolygonStateStatus.loading),

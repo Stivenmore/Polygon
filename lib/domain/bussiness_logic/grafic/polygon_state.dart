@@ -25,7 +25,7 @@ class PolygonState extends Equatable {
     this.status = status ?? PolygonStateStatus.none;
     this.aggregateBarEntity = aggregateBarEntity ?? singleEmptyAggre;
     this.type = type ?? PolygonStateType.twoyears;
-    this.currentSelect = currentSelect ?? 3;
+    this.currentSelect = currentSelect ?? 4;
     this.label = label ?? '';
     this.connection = connection ?? PolygonStateConnection.activate;
   }

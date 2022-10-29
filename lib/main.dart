@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       providers: [
         BlocProvider(
             create: (_) => RealtimeCurrencyCubit(dataSource, conectionManager)),
-        BlocProvider(create: (_) => PolygonCubit(dataSource)),
+        BlocProvider(create: (_) => PolygonCubit(dataSource, conectionManager)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
