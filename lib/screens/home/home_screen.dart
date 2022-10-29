@@ -64,7 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         return SizedBox(
                             height: 150,
                             width: responsive.wp(80),
-                            child: Text("Informacion imposible de cargar"));
+                            child: Text(
+                                "Informacion imposible de cargar, revise su conexion"));
                       default:
                         return ShimmerCardCurrency(responsive: responsive);
                     }
