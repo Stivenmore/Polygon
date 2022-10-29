@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomGrafic extends StatefulWidget {
-  const CustomGrafic({super.key});
+  const CustomGrafic({Key? key}) : super(key: key);
 
   @override
   State<CustomGrafic> createState() => _CustomGraficState();
@@ -60,12 +60,10 @@ LineChartData mainData(
       enabled: true,
       touchCallback: (p0, p1) {
         cubit.changeLabelGrafic('...');
-        print("End");
       },
       getTouchLineStart: (barData, spotIndex) {
         cubit.changeLabelGrafic(model.result[spotIndex].t);
-        print("Start");
-        return 2.0;
+        return spotIndex.toDouble();
       },
     ),
     gridData: FlGridData(

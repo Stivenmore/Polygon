@@ -1,5 +1,6 @@
 import 'package:divisas/domain/bussiness_logic/currencydivisas/realtime_currency_cubit.dart';
 import 'package:divisas/domain/bussiness_logic/grafic/polygon_cubit.dart';
+import 'package:divisas/domain/models/currency_conversion_model.dart';
 import 'package:divisas/screens/utils/responsive.dart';
 import 'package:divisas/screens/widgets/card_currency.dart';
 import 'package:divisas/screens/widgets/custom_app_bar.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -46,24 +47,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SliverToBoxAdapter(
                   child: CustomAppBar(),
                 ),
-                SliverToBoxAdapter(
-                  child: Builder(builder: (context) {
-                    final status = context.select(
-                        (RealtimeCurrencyCubit cubit) => cubit.state.status);
-                    switch (status) {
-                      case RealtimeCurrencyStateStatus.loading:
+                SliverToBoxAdapter(child:
+                    BlocBuilder<RealtimeCurrencyCubit, RealtimeCurrencyState>(
+                  builder: (context, state) {
+                    switch (state.runtimeType) {
+                      case RealtimeCurrencyLoading:
                         return ShimmerCardCurrency(responsive: responsive);
-                      case RealtimeCurrencyStateStatus.loaded:
-                        final model = context.select(
-                            (RealtimeCurrencyCubit cubit) =>
-                                cubit.state.currencyConversionModel);
+                      case RealtimeCurrencyLoaded:
+                        final model = state.props[0] as CurrencyConversionModel;
                         return CardCurrency(
                             responsive: responsive, model: model);
                       default:
                         return ShimmerCardCurrency(responsive: responsive);
                     }
-                  }),
-                ),
+                  },
+                )),
                 const SliverToBoxAdapter(
                   child: GraficCard(),
                 ),

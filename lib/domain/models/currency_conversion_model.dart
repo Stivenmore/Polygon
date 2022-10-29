@@ -1,6 +1,7 @@
 import 'package:divisas/screens/utils/time_convert.dart';
+import 'package:equatable/equatable.dart';
 
-class CurrencyConversionModel {
+class CurrencyConversionModel extends Equatable {
   final int converted;
   final int initialAmout;
   final String ask;
@@ -10,7 +11,7 @@ class CurrencyConversionModel {
   final String symbol;
   final String id;
 
-  CurrencyConversionModel({
+  const CurrencyConversionModel({
     required this.converted,
     required this.initialAmout,
     required this.ask,
@@ -32,14 +33,8 @@ class CurrencyConversionModel {
         symbol: map["symbol"] as String? ?? "USD/COP",
         id: map["request_id"] as String? ?? "0");
   }
-}
 
-CurrencyConversionModel singleEmpty = CurrencyConversionModel(
-    converted: 0,
-    initialAmout: 1,
-    ask: '*****.***',
-    bid: '*****.*',
-    exchange: '0.0',
-    time: timeFormat(null),
-    symbol: "USD/COP",
-    id: "0");
+  @override
+  List<Object> get props =>
+      [converted, initialAmout, ask, bid, exchange, time, symbol, id];
+}

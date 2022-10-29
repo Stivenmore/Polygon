@@ -1,4 +1,4 @@
-import 'package:divisas/data/datasources/polygon_rest_datasource.dart';
+import 'package:divisas/data/contract/polygon_contract.dart';
 import 'package:divisas/data/services/result.dart';
 import 'package:divisas/domain/entities/aggregates_bar_entity.dart';
 import 'package:divisas/screens/utils/time_convert.dart';
@@ -10,8 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 part 'polygon_state.dart';
 
 class PolygonCubit extends Cubit<PolygonState> {
-  final PolygonRestDataSource _dataSource;
-  PolygonCubit(PolygonRestDataSource dataSource)
+  final PolygonContract _dataSource;
+  PolygonCubit(PolygonContract dataSource)
       : _dataSource = dataSource,
         super(PolygonState());
 

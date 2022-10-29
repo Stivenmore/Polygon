@@ -19,7 +19,7 @@ class PolygonState extends Equatable {
       int? currentSelect,
       Widget? bottomTitleWidgets}) {
     this.status = status ?? PolygonStateStatus.none;
-    this.aggregateBarEntity = aggregateBarEntity ?? singleEmpty;
+    this.aggregateBarEntity = aggregateBarEntity ?? singleEmptyAggre;
     this.type = type ?? PolygonStateType.twoyears;
     this.currentSelect = currentSelect ?? 4;
     this.label = label ?? '';

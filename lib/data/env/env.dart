@@ -11,3 +11,21 @@ ApiManager apiManager = ApiManager(
       receiveTimeout: 5000,
     )),
     host: baseUrl);
+
+ApiManager apiManagerMock1 = ApiManager(
+    client: Dio(BaseOptions(
+      baseUrl: baseUrl,
+      connectTimeout: 5000,
+      receiveTimeout: 5000,
+    )),
+    host: baseUrl,
+    mockfile: "realtime_current_mock.json");
+
+ApiManager apiManagerMock2 = ApiManager(
+    client: Dio(BaseOptions(
+      baseUrl: baseUrl,
+      connectTimeout: 5000,
+      receiveTimeout: 5000,
+    )),
+    host: baseUrl,
+    mockfile: "aggregates_bar.json");

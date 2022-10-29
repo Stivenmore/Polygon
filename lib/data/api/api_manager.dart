@@ -29,28 +29,21 @@ class ApiManager {
     int? mockResponseFile,
     required String path,
     Map<String, dynamic>? queryParameters,
-    bool onlyPath = false,
     String? temporalHost,
   }) async {
     if (mockResponseFile != null && mockResponseFile == 1) {
       final response = await _getMockResponse(_mockfile!);
-      return Result.success(response);
-    } else if (mockResponseFile != null && mockResponseFile == 2) {
-      return Result.fail(
-        const BackendError(
-          statusCode: 500,
-          description: 'default',
-          err: 'default',
-        ),
-      );
-    } else if (mockResponseFile != null && mockResponseFile == 3) {
-      return Result.fail(
-        const BackendError(
-          statusCode: 500,
-          description: 'default',
-          err: 'default',
-        ),
-      );
+      try {
+        return Result.success(response);
+      } catch (e) {
+        return Result.fail(
+          const BackendError(
+            statusCode: 500,
+            description: 'error',
+            err: 'error',
+          ),
+        );
+      }
     } else if (mockResponseFile != null && mockResponseFile < 1) {
       return Result.fail(
         const BackendError(
@@ -64,10 +57,6 @@ class ApiManager {
     Map<String, dynamic> headers = <String, dynamic>{};
 
     Uri uri = Uri.https(temporalHost ?? _host, path, queryParameters);
-
-    if (onlyPath) {
-      path = 'https://${temporalHost ?? _host}/$path';
-    }
 
     final Response response;
 

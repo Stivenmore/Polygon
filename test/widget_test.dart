@@ -1,30 +1,56 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:divisas/data/datasources/polygon_test_mock.dart';
+import 'package:divisas/data/env/env.dart';
+import 'package:divisas/data/services/result.dart';
+import 'package:divisas/domain/bussiness_logic/currencydivisas/realtime_currency_cubit.dart';
+import 'package:divisas/domain/bussiness_logic/grafic/polygon_cubit.dart';
+import 'package:divisas/screens/utils/time_convert.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:divisas/main.dart';
+import 'template_result.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  group("Group Integrations Testing From Layer Logic/Bussiness to Data", () {
+    blocTest<RealtimeCurrencyCubit, RealtimeCurrencyState>(
+      'Integration Load realtime currency conversion USD/COP Success',
+      build: () => RealtimeCurrencyCubit(PolygonTestMock(apiManagerMock1)),
+      act: (RealtimeCurrencyCubit cubit) => cubit.getRealTImeCurrency(),
+      expect: () => [
+        RealtimeCurrencyLoading(),
+        const RealtimeCurrencyLoaded(currencyConversionModel: model)
+      ],
+    );
+    blocTest<PolygonCubit, PolygonState>(
+      'Load aggregatesBar Success',
+      build: () => PolygonCubit(PolygonTestMock(apiManagerMock2)),
+      act: (PolygonCubit cubit) => cubit.aggregatesBarGet(4),
+      expect: () => <PolygonState>[
+        PolygonState(status: PolygonStateStatus.loading),
+        PolygonState(
+            aggregateBarEntity: model2,
+            currentSelect: 4,
+            status: PolygonStateStatus.loaded,
+            type: PolygonStateType.oneday)
+      ],
+    );
+  });
+  group("Group United Testing Services", () {
+    test("Load realtime currency conversion USD/COP Success", () async {
+      final cubit = PolygonTestMock(apiManagerMock1);
+      final Result<dynamic, BackendError> result = await cubit
+          .realTimeCurrencyConversion(from: 'USD', to: 'COP', precision: '2');
+      expect(result.isSuccess, isTrue);
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    test("Load aggregatesBar Success", () async {
+      final cubit = PolygonTestMock(apiManagerMock1);
+      final Result<dynamic, BackendError> result = await cubit.aggregatesBar(
+          from: "2022/10/28",
+          to: formater(DateTime.now()),
+          range: 4 == 0 || 4 == 1 ? "week" : "hour");
+      expect(result.isSuccess, isTrue);
+    });
   });
 }

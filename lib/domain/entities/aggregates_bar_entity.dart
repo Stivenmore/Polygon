@@ -1,6 +1,7 @@
 import 'package:divisas/screens/utils/time_convert.dart';
+import 'package:equatable/equatable.dart';
 
-class AggregateBarEntity {
+class AggregateBarEntity extends Equatable {
   final int resultsCount;
   final int queryCount;
   final String status;
@@ -8,7 +9,7 @@ class AggregateBarEntity {
   final String id;
   final List<AggregateBarResult> result;
 
-  AggregateBarEntity(
+  const AggregateBarEntity(
       {required this.resultsCount,
       required this.id,
       required this.queryCount,
@@ -25,9 +26,13 @@ class AggregateBarEntity {
         resultsCount: map["resultsCount"] as int? ?? 0,
         result: AggregateBarResult.fromList(map["results"]));
   }
+
+  @override
+  List<Object> get props =>
+      [ticker, id, queryCount, status, result, resultsCount];
 }
 
-class AggregateBarResult {
+class AggregateBarResult extends Equatable {
   final dynamic v;
   final dynamic vw;
   final dynamic o;
@@ -36,7 +41,7 @@ class AggregateBarResult {
   final dynamic l;
   final dynamic t;
   final dynamic n;
-  AggregateBarResult(
+  const AggregateBarResult(
       {required this.v,
       required this.vw,
       required this.o,
@@ -62,12 +67,15 @@ class AggregateBarResult {
   static List<AggregateBarResult> fromList(List list) {
     return list.map((e) => AggregateBarResult.fromJson(e)).toList();
   }
+
+  @override
+  List<Object> get props => [v, vw, o, c, h, l, t, n];
 }
 
-AggregateBarEntity singleEmpty = AggregateBarEntity(
+AggregateBarEntity singleEmptyAggre = const AggregateBarEntity(
     resultsCount: 0,
     id: "1",
     queryCount: 0,
     status: "None",
     ticker: "USD/COP",
-    result: []);
+    result: <AggregateBarResult>[]);
