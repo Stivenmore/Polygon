@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: () async {
-          if (!ConectionManager().isConection) {
+          if (ConectionManager().isConection) {
             context.read<RealtimeCurrencyCubit>().getRealTImeCurrency();
             context.read<PolygonCubit>().aggregatesBarGet(4);
           }
