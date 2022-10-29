@@ -1,3 +1,4 @@
+import 'package:divisas/device/conection_manager.dart';
 import 'package:divisas/domain/bussiness_logic/currencydivisas/realtime_currency_cubit.dart';
 import 'package:divisas/domain/bussiness_logic/grafic/polygon_cubit.dart';
 import 'package:divisas/domain/models/currency_conversion_model.dart';
@@ -22,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     Future.delayed(Duration.zero, () {
       context.read<RealtimeCurrencyCubit>().getRealTImeCurrency();
-      context.read<PolygonCubit>().aggregatesBarGet(4);
+      context.read<PolygonCubit>().aggregatesBarGet(3);
     });
     super.initState();
   }
@@ -34,8 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: () async {
-          context.read<RealtimeCurrencyCubit>().getRealTImeCurrency();
-          context.read<PolygonCubit>().aggregatesBarGet(4);
+          if (!ConectionManager().isConection) {
+            context.read<RealtimeCurrencyCubit>().getRealTImeCurrency();
+            context.read<PolygonCubit>().aggregatesBarGet(4);
+          }
         },
         child: SizedBox(
           height: responsive.height,
@@ -57,6 +60,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         final model = state.props[0] as CurrencyConversionModel;
                         return CardCurrency(
                             responsive: responsive, model: model);
+                      case RealtimeCurrencyError:
+                        return SizedBox(
+                            height: 150,
+                            width: responsive.wp(80),
+                            child: Text("Informacion imposible de cargar"));
                       default:
                         return ShimmerCardCurrency(responsive: responsive);
                     }

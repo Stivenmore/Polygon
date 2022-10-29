@@ -95,7 +95,7 @@ class ApiManager {
         case DioErrorType.sendTimeout:
           return Result.fail(
             BackendError(
-              statusCode: error.response?.statusCode ?? 500,
+              statusCode: error.response?.statusCode ?? 501,
               description: error.message,
               err: 'sendTimeout',
             ),
@@ -105,7 +105,7 @@ class ApiManager {
             BackendError(
               statusCode: error.response?.statusCode ?? 500,
               description: error.message,
-              err: 'default',
+              err: 'ConnectionFail',
             ),
           );
       }
