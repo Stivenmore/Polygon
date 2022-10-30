@@ -39,5 +39,14 @@ En este punto fue necesario no solo implementar local storage, sino tambien cont
 
 Bueno, he aqui mi prueba, la he realizado con mucho cariño, y estare atento al feedback, es algo muy importante para mi.
 
+## Puntos extra en la prueba.
+3/3 implementados.
+
+## Configuracion de ambiente.
+Flutter: 3.3.2
+Visual Studio Code: Last version.
+
+
+
 Feliz dia/tarde/noche.
 
