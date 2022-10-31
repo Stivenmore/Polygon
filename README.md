@@ -1,6 +1,6 @@
 # Polygon
 
-Linkeding [@Stiven Morelos Barahona](https://www.linkedin.com/in/stiven-morelo-barahona-61a9a11a5/)
+Linkeding [@Stiven Morelos Barahona](https://www.linkedin.com/in/stiven-morelos-barahona-61a9a11a5/)
 
 ## Patron Bloc y Clean Architecture
 
