@@ -13,6 +13,6 @@ class ConectionManager {
 
   Future updateConnectionStatus(ConnectivityResult result) async {
     _connectionStatus = result;
-    print(result);
+    print(_connectionStatus);
   }
 }

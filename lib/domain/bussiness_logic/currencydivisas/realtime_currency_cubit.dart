@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:divisas/data/contract/polygon_contract.dart';
 import 'package:divisas/data/services/result.dart';
 import 'package:divisas/device/conection_manager.dart';
@@ -43,18 +44,21 @@ class RealtimeCurrencyCubit extends Cubit<RealtimeCurrencyState> {
         }
         emit(RealtimeCurrencyLoaded(
             currencyConversionModel: localModel,
-            isConnected: conectionManager.isConection));
+            isConnected:
+                conectionManager.isConection == ConnectivityResult.none));
       } else {
         box.length != 0
             ? localmethod()
             : emit(RealtimeCurrencyError(
-                isConnected: conectionManager.isConection));
+                isConnected:
+                    conectionManager.isConection == ConnectivityResult.none));
       }
     } catch (e) {
       box.length != 0
           ? localmethod()
-          : emit(
-              RealtimeCurrencyError(isConnected: conectionManager.isConection));
+          : emit(RealtimeCurrencyError(
+              isConnected:
+                  conectionManager.isConection == ConnectivityResult.none));
     }
   }
 

@@ -1,7 +1,6 @@
 import 'package:divisas/data/api/api_manager.dart';
 import 'package:divisas/data/contract/polygon_contract.dart';
 import 'package:divisas/data/env/env.dart';
-import 'package:divisas/data/services/error_handler.dart';
 import 'package:divisas/data/services/result.dart';
 
 class PolygonTestMock implements PolygonContract {
@@ -28,7 +27,6 @@ class PolygonTestMock implements PolygonContract {
         success: (success) => Success(success),
       );
     } catch (e) {
-      ErrorHandler(e);
       throw Exception(e);
     }
   }
@@ -51,7 +49,6 @@ class PolygonTestMock implements PolygonContract {
         success: (success) => Success(success),
       );
     } catch (e) {
-      ErrorHandler(e);
       throw Exception(e);
     }
   }

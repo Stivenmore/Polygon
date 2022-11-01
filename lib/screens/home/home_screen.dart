@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:divisas/device/conection_manager.dart';
 import 'package:divisas/domain/bussiness_logic/currencydivisas/realtime_currency_cubit.dart';
 import 'package:divisas/domain/bussiness_logic/grafic/polygon_cubit.dart';
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: RefreshIndicator(
         onRefresh: () async {
-          if (ConectionManager().isConection) {
+          if (ConectionManager().isConection != ConnectivityResult.none) {
             context.read<RealtimeCurrencyCubit>().getRealTImeCurrency();
             context.read<PolygonCubit>().aggregatesBarGet(4);
           }
